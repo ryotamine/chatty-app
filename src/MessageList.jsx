@@ -7,10 +7,15 @@ class MessageList extends Component {
 
   render() {
     const messageList = this.props.messages.map((message) => {
-      return <ul key={message.id.toString()}><strong>{message.username}</strong> {message.content}</ul>
+      return (
+        <div className='message' key={message.id.toString()}>
+          <span className='username'><strong>{message.username}</strong></span>
+          <span className='content'>{message.content}</span>
+        </div>
+      );
     });
     return (
-      <div>
+      <div className='message-list'>
         {messageList}
       </div>
     );

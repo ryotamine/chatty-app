@@ -1,7 +1,3 @@
-h1 {
-  color: tomato;
-}
-
 body {
   background: white;
   color: black;
@@ -41,6 +37,10 @@ body {
 .message {
   display: flex;
   padding: 5px;
+}
+
+.message-list {
+  padding: 10px;
 }
 
 .message.system {
@@ -84,4 +84,12 @@ body {
   line-height: 60px;
   padding: 0 10px;
   text-decoration: none;
+}
+
+.username {
+  flex: 2;
+}
+
+.content {
+  flex: 8;
 }
