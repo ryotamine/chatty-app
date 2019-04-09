@@ -7,13 +7,30 @@ class App extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {};
+    this.state = {
+      currentUser: {name: "Ryota"},
+      messages: [
+        {
+          id: "A",
+          username: "Bob",
+          content: "Has anyone seen my marbles?"
+        },
+        {
+          id: "B",
+          username: "Anonymous",
+          content: "No, I think you lost them. You lost your marbles Bob. You lost them for good."
+        }
+      ]
+    };
   }
 
   render() {
     return (
       <div>
-        <MessageList />
+        <nav className='navbar'>
+          <a href='/' className='navbar-brand'>Chatty</a>
+        </nav>
+        <MessageList messages={this.state.messages} />
         <Message />
         <ChatBar />
       </div>

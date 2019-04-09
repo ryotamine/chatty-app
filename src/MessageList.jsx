@@ -1,11 +1,18 @@
 import React, {Component} from 'react';
 
 class MessageList extends Component {
+  constructor(props) {
+    super(props);
+  }
+
   render() {
+    const messageList = this.props.messages.map((message) => {
+      return <ul><strong>{message.username}</strong> {message.content}</ul>
+    });
     return (
-      <nav className='navbar'>
-        <a href='/' className='navbar-brand'>Chatty</a>
-      </nav>
+      <div>
+        {messageList}
+      </div>
     );
   }
 }
