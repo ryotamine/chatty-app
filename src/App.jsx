@@ -11,17 +11,25 @@ class App extends Component {
       currentUser: {name: "Ryota"},
       messages: [
         {
-          id: "A",
+          id: 1,
           username: "Bob",
           content: "Has anyone seen my marbles?"
         },
         {
-          id: "B",
+          id: 2,
           username: "Anonymous",
           content: "No, I think you lost them. You lost your marbles Bob. You lost them for good."
         }
       ]
     };
+  }
+
+  componentDidMount() {
+    setTimeout(() => {
+      const newMessage = {id: 3, username: "Michelle", content: "Hello there!"};
+      const messages = this.state.messages.concat(newMessage);
+      this.setState({messages});
+    }, 3000);
   }
 
   render() {
