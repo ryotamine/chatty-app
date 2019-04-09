@@ -8,7 +8,7 @@ class App extends Component {
     super(props);
 
     this.state = {
-      currentUser: {name: "Ryota"},
+      currentUser: {name: "Bob"},
       messages: [
         {
           id: 1,
@@ -32,6 +32,13 @@ class App extends Component {
     }, 3000);
   }
 
+  addMessage(content) {
+    this.setState(state => {
+      state.messages = [...state.messages, { id: Math.random(), username: state.currentUser.name, content }];
+      return state;
+    });
+  }
+
   render() {
     return (
       <div>
@@ -40,7 +47,7 @@ class App extends Component {
         </nav>
         <MessageList messages={this.state.messages} />
         <Message />
-        <ChatBar />
+        <ChatBar currentUser={this.state.currentUser.name} addMessage={this.addMessage.bind(this)}/>
       </div>
     );
   }
