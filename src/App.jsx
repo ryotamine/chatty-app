@@ -21,22 +21,34 @@ class App extends Component {
     this.socket.onmessage = this.handleServerMessage;
   }
 
-
-  addMessage = (newChat) => {
-    if (this.state && this.state.messages) {
-      const info = JSON.stringify({
+  addUser = (newUser) => {
+    if (this.state && this.state.currentUser.name) {
+      const info1 = JSON.stringify({
         id: uuid(),
         username: this.state.currentUser.name,
         content: newChat
       });
-      this.socket.send(info);
+      this.socket.send(info1);
+    }
+  };
+
+  addMessage = (newChat) => {
+    if (this.state && this.state.messages) {
+      const info2 = JSON.stringify({
+        id: uuid(),
+        username: this.state.currentUser.name,
+        content: newChat
+      });
+      this.socket.send(info2);
     }
   };
 
   handleServerMessage = (event) => {
     const message = JSON.parse(event.data);
     console.log(message);
-    this.setState({ messages: [...this.state.messages, message] });
+    this.setState({
+      currentUser: this.state.currentUser.name,
+      messages: [...this.state.messages, message] });
   };
 
   render() {
@@ -47,17 +59,10 @@ class App extends Component {
         </nav>
         <MessageList messages={this.state.messages} />
         <Message />
-        <ChatBar currentUser={this.state.currentUser.name} addMessage={this.addMessage.bind(this)}/>
+        <ChatBar addUser={this.addUser.bind(this)} addMessage={this.addMessage.bind(this)}/>
       </div>
     );
   }
-
-  // addMessage(content) {
-  //   this.setState(state => {
-  //     state.messages = [...state.messages, { id: uuid(), username: state.currentUser.name, content }];
-  //     return state;
-  //   });
-  // };
 }
 
 export default App;

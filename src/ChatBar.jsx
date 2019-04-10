@@ -3,8 +3,24 @@ import React, {Component} from 'react';
 class ChatBar extends Component {
   constructor(props) {
     super(props);
-    this.state = {newChat: ''};
+    this.state = {
+      newUser: '',
+      newChat: ''
+    };
+    this.handleUser = this.handleUser.bind(this);
     this.handleChat = this.handleChat.bind(this);
+  }
+
+  handleUser(event1) {
+    event1.preventDefault();
+    let newUser = event1.target.value;
+    this.setState({newUser});
+  }
+
+  handleChat(event2) {
+    event2.preventDefault();
+    let newChat = event2.target.value;
+    this.setState({newChat});
   }
 
   render() {
@@ -13,27 +29,28 @@ class ChatBar extends Component {
         <input className='chatbar-username'
                placeholder='Your Name (Optional)'
                type='text'
-               defaultValue={this.props.currentUser}
+               value={this.state.newUser}
+               onChange={this.handleUser}
+               onKeyPress={event1 => {
+                 if (event1.key === 'Enter') {
+                   this.props.addUser(this.state.newUser)
+                 }
+               }}
+
         />
         <input className='chatbar-message'
                placeholder='Type a message and hit ENTER'
                type='text'
                value={this.state.newChat}
                onChange={this.handleChat}
-               onKeyPress={event => {
-                 if (event.key === 'Enter') {
+               onKeyPress={event2 => {
+                 if (event2.key === 'Enter') {
                    this.props.addMessage(this.state.newChat)
                  }
                }}
         />
       </footer>
     );
-  }
-
-  handleChat(event) {
-    event.preventDefault();
-    let newChat = event.target.value;
-    this.setState({newChat});
   }
 }
 
