@@ -16,12 +16,6 @@ class App extends Component {
   }
 
   componentDidMount() {
-    setTimeout(() => {
-      const newMessage = {id: 3, username: 'Michelle', content: 'Hello there!'};
-      const messages = this.state.messages.concat(newMessage);
-      this.setState({messages});
-    }, 3000);
-
     this.socket = new WebSocket('ws://localhost:3001');
     this.socket.onopen = () => console.log('Connected to server.');
     this.socket.onmessage = this.handleServerMessage;
