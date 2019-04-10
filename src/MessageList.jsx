@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
 
+const uuid = require('uuid/v4');
+
 class MessageList extends Component {
   constructor(props) {
     super(props);
@@ -8,7 +10,7 @@ class MessageList extends Component {
   render() {
     const messageList = this.props.messages.map((message) => {
       return (
-        <div className='message' key={message.id.toString()}>
+        <div className='message' key={uuid()}>
           <span className='username'><strong>{message.username}</strong></span>
           <span className='content'>{message.content}</span>
         </div>

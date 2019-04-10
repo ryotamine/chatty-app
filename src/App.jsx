@@ -3,6 +3,8 @@ import MessageList from './MessageList.jsx';
 import Message from './Message.jsx';
 import ChatBar from './ChatBar.jsx';
 
+//const uuid = require('uuid/v4');
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -31,19 +33,27 @@ class App extends Component {
       this.setState({messages});
     }, 3000);
 
-    this.socket = new Websocket('wss://localhost:3001');
-
-    this.socket.onopen(() => {
-      console.log('Connected to server.');
-    });
+    this.socket = new WebSocket('ws://localhost:3001');
+    this.socket.onopen = () => console.log('Connected to server.');
+    this.socket.onmessage = this.handleServerMessage;
   }
 
-  addMessage(content) {
-    this.setState(state => {
-      state.messages = [...state.messages, { id: Math.random(), username: state.currentUser.name, content }];
-      return state;
-    });
-  }
+
+  addMessage = (newChat) => {
+    if (this.state && this.state.messages) {
+      const info = JSON.stringify({
+        username: this.state.currentUser.name,
+        content: newChat
+      });
+      this.socket.send(info);
+    }
+  };
+
+  handleServerMessage = (event) => {
+    const message = JSON.parse(event.data);
+    console.log(message);
+    this.setState({ messages: [...this.state.messages, message] });
+  };
 
   render() {
     return (
@@ -57,6 +67,13 @@ class App extends Component {
       </div>
     );
   }
+
+  // addMessage(content) {
+  //   this.setState(state => {
+  //     state.messages = [...state.messages, { id: uuid(), username: state.currentUser.name, content }];
+  //     return state;
+  //   });
+  // };
 }
 
 export default App;
