@@ -31,6 +31,7 @@ class App extends Component {
   addMessage = (newChat) => {
     if (this.state && this.state.messages) {
       const info = JSON.stringify({
+        id: uuid(),
         username: this.state.currentUser.name,
         content: newChat
       });
