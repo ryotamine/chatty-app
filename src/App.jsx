@@ -8,17 +8,17 @@ class App extends Component {
     super(props);
 
     this.state = {
-      currentUser: {name: "Bob"},
+      currentUser: {name: 'Bob'},
       messages: [
         {
           id: 1,
-          username: "Bob",
-          content: "Has anyone seen my marbles?"
+          username: 'Bob',
+          content: 'Has anyone seen my marbles?'
         },
         {
           id: 2,
-          username: "Anonymous",
-          content: "No, I think you lost them. You lost your marbles Bob. You lost them for good."
+          username: 'Anonymous',
+          content: 'No, I think you lost them. You lost your marbles Bob. You lost them for good.'
         }
       ]
     };
@@ -26,10 +26,16 @@ class App extends Component {
 
   componentDidMount() {
     setTimeout(() => {
-      const newMessage = {id: 3, username: "Michelle", content: "Hello there!"};
+      const newMessage = {id: 3, username: 'Michelle', content: 'Hello there!'};
       const messages = this.state.messages.concat(newMessage);
       this.setState({messages});
     }, 3000);
+
+    this.socket = new Websocket('wss://localhost:3001');
+
+    this.socket.onopen(() => {
+      console.log('Connected to server.');
+    });
   }
 
   addMessage(content) {
