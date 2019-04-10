@@ -3,7 +3,7 @@ import MessageList from './MessageList.jsx';
 import Message from './Message.jsx';
 import ChatBar from './ChatBar.jsx';
 
-//const uuid = require('uuid/v4');
+const uuid = require('uuid/v4');
 
 class App extends Component {
   constructor(props) {
@@ -11,18 +11,7 @@ class App extends Component {
 
     this.state = {
       currentUser: {name: 'Bob'},
-      messages: [
-        {
-          id: 1,
-          username: 'Bob',
-          content: 'Has anyone seen my marbles?'
-        },
-        {
-          id: 2,
-          username: 'Anonymous',
-          content: 'No, I think you lost them. You lost your marbles Bob. You lost them for good.'
-        }
-      ]
+      messages: []
     };
   }
 
