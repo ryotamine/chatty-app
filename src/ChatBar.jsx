@@ -3,6 +3,7 @@ import React, {Component} from 'react';
 class ChatBar extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
       newUser: '',
       newChat: ''
@@ -11,16 +12,15 @@ class ChatBar extends Component {
     this.handleChat = this.handleChat.bind(this);
   }
 
-  handleUser(event1) {
-    event1.preventDefault();
-    let newUser = event1.target.value;
-    console.log(newUser);
+  handleUser(eventUser) {
+    eventUser.preventDefault();
+    let newUser = eventUser.target.value;
     this.setState({newUser});
   }
 
-  handleChat(event2) {
-    event2.preventDefault();
-    let newChat = event2.target.value;
+  handleChat(eventChat) {
+    eventChat.preventDefault();
+    let newChat = eventChat.target.value;
     this.setState({newChat});
   }
 
