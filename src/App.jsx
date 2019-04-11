@@ -13,6 +13,7 @@ class App extends Component {
       currentUser: {name: 'Bob'},
       messages: []
     };
+    this.handleServerMessage = this.handleServerMessage.bind(this);
   }
 
   componentDidMount() {
@@ -21,34 +22,30 @@ class App extends Component {
     this.socket.onmessage = this.handleServerMessage;
   }
 
-  addUser = (newUser) => {
-    if (this.state && this.state.currentUser.name) {
+  addUser = (newUser, newChat) => {
+    console.log("We are here");
+    if (newUser && newChat) {
       const info1 = JSON.stringify({
         id: uuid(),
-        username: this.state.currentUser.name,
+        username: newUser,
         content: newChat
       });
+      console.log('info1', info1);
       this.socket.send(info1);
     }
   };
 
-  addMessage = (newChat) => {
-    if (this.state && this.state.messages) {
-      const info2 = JSON.stringify({
-        id: uuid(),
-        username: this.state.currentUser.name,
-        content: newChat
-      });
-      this.socket.send(info2);
-    }
-  };
-
   handleServerMessage = (event) => {
+    console.log("Here");
     const message = JSON.parse(event.data);
-    console.log(message);
+    console.log("Message", message);
+    console.log("Name", this.state.currentUser.name);
+    const newMessageList = this.state.messages;
+    newMessageList.push({content: message.content, name: message.username});
     this.setState({
-      currentUser: this.state.currentUser.name,
-      messages: [...this.state.messages, message] });
+      currentUser: {name: message.username},
+      messages: newMessageList
+  });
   };
 
   render() {
@@ -59,7 +56,7 @@ class App extends Component {
         </nav>
         <MessageList messages={this.state.messages} />
         <Message />
-        <ChatBar addUser={this.addUser.bind(this)} addMessage={this.addMessage.bind(this)}/>
+        <ChatBar addUser={this.addUser.bind(this)}/>
       </div>
     );
   }

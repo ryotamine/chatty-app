@@ -9,9 +9,10 @@ class MessageList extends Component {
 
   render() {
     const messageList = this.props.messages.map((message) => {
+      console.log("Is this seen?", message);
       return (
         <div className='message' key={uuid()}>
-          <span className='username'><strong>{message.username}</strong></span>
+          <span className='username'><strong>{message.name}</strong></span>
           <span className='content'>{message.content}</span>
         </div>
       );

@@ -14,6 +14,7 @@ class ChatBar extends Component {
   handleUser(event1) {
     event1.preventDefault();
     let newUser = event1.target.value;
+    console.log(newUser);
     this.setState({newUser});
   }
 
@@ -33,7 +34,7 @@ class ChatBar extends Component {
                onChange={this.handleUser}
                onKeyPress={event1 => {
                  if (event1.key === 'Enter') {
-                   this.props.addUser(this.state.newUser)
+                   this.props.addUser(this.state.newUser, this.state.newChat)
                  }
                }}
 
@@ -45,7 +46,7 @@ class ChatBar extends Component {
                onChange={this.handleChat}
                onKeyPress={event2 => {
                  if (event2.key === 'Enter') {
-                   this.props.addMessage(this.state.newChat)
+                   this.props.addUser(this.state.newUser, this.state.newChat)
                  }
                }}
         />
