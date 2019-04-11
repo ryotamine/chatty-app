@@ -22,7 +22,14 @@ wss.on('connection', ws => {
     console.log('received a message %s', data);
     const json = JSON.parse(data);
 
-    wss.broadcast(json);
+    switch(json.type) {
+      case 'postNotification':
+        wss.broadcast(json);
+        break;
+      case 'postMessage':
+        wss.broadcast(json);
+        break;
+    }
   });
 });
 

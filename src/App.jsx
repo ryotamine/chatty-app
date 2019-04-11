@@ -10,74 +10,60 @@ class App extends Component {
     super(props);
 
     this.state = {
-      currentUser: {name: 'Bob'},
+      currentUser: { name: '' },
       messages: []
     };
-    this.handleIncomingMessage = this.handleIncomingMessage.bind(this);
-    this.handleIncomingNotification = this.handleIncomingNotification.bind(this);
+    this.handleServerMessage = this.handleServerMessage.bind(this);
   }
 
   componentDidMount() {
-    console.log('componentDidMount <App />');
     this.socket = new WebSocket('ws://localhost:3001');
-
-    this.socket.onopen = (event) => {
-      console.log('Connected to server.');
-    };
-
-    // this.socket.onmessage = this.handleIncomingMessage;
-    this.socket.onmessage = (event) => {
-      console.log('Message', event.data);
-      // the socket event data is encoded as a JSON string
-      // the line turns it into an object
-      const data = JSON.parse(event.data);
-      console.log('Data', data);
-
-      switch(data.type) {
-        case 'incomingMessage':
-          // Handle incoming message
-          console.log('Incoming Message');
-          handleIncomingMessage(data);
-          break;
-        case 'incomingNotification':
-          // Handle incoming notification
-          console.log('Incoming Notification');
-          handleIncomingNotification(data);
-          break;
-        default:
-          // show an error in the console if the message is unknown
-          // throw new Error('Unknown event type ' + data.type);
-      }
-    };
+    this.socket.onopen = () => console.log('Connected to server.');
+    this.socket.onmessage = this.handleServerMessage;
   }
 
-  addUser = (newUser, newChat) => {
-    if (newUser && newChat) {
-      const info = JSON.stringify({
-        id: uuid(),
-        username: newUser,
-        content: newChat
-      });
-      this.socket.send(info);
+  changeName = (e) => {
+    if (e === '') {
+      const defaultName = 'Anonymous';
+      console.log(defaultName);
+      const notify = {'type': 'postNotification', 'content': `${defaultName} has changed their name to ${e}.`};
+      //console.log(`${this.state.currentUser.name} has changed their name to ${e}.`);
+      this.socket.send(JSON.stringify(notify));
+      this.setState({currentUser: {name: e }});
+    } else if (e === this.state.currentUser.name) {
+
+    } else if (e !== this.state.currentUser.name) {
+      console.log('Event of name', e);
+      // console.log(this.state.currentUser);s
+      const notify = {'type': 'postNotification',
+       'content': `${this.state.currentUser.name} has changed their name to ${e}.`,
+       id: uuid() };
+      console.log(`${this.state.currentUser.name} has changed their name to ${e}.`);
+      this.socket.send(JSON.stringify(notify));
+      this.setState({currentUser: {name: e }});
+
+      console.log(this.state.currentUser.name);
     }
   };
 
-  handleIncomingMessage = (event) => {
-    console.log('Incoming Message', event);
+  sendMessage = (content) => {
+    this.socket.send(JSON.stringify({
+      type: 'postMessage',
+      content,
+      id: uuid(),
+      name: this.state.currentUser.name
+    }));
+  };
+
+  handleServerMessage = (event) => {
+    console.log(event);
     const message = JSON.parse(event.data);
     const newMessageList = this.state.messages;
-    newMessageList.push({content: message.content, name: message.username});
+    newMessageList.push(message);
     this.setState({
-      currentUser: {name: message.username},
       messages: newMessageList
     });
   };
-
-  handleIncomingNotification = (event) => {
-    console.log('Incoming Notification', event);
-    const notification = JSON.parse(event.data);
-
-  }
 
   render() {
     return (
@@ -86,8 +72,7 @@ class App extends Component {
           <a href='/' className='navbar-brand'>Chatty</a>
         </nav>
         <MessageList messages={this.state.messages} />
-        <Message />
-        <ChatBar addUser={this.addUser.bind(this)}/>
+        <ChatBar sendMessage={this.sendMessage.bind(this)} changeName={this.changeName}/>
       </div>
     );
   }
