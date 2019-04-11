@@ -13,13 +13,42 @@ class App extends Component {
       currentUser: {name: 'Bob'},
       messages: []
     };
-    this.handleServerMessage = this.handleServerMessage.bind(this);
+    this.handleIncomingMessage = this.handleIncomingMessage.bind(this);
+    this.handleIncomingNotification = this.handleIncomingNotification.bind(this);
   }
 
   componentDidMount() {
+    console.log('componentDidMount <App />');
     this.socket = new WebSocket('ws://localhost:3001');
-    this.socket.onopen = () => console.log('Connected to server.');
-    this.socket.onmessage = this.handleServerMessage;
+
+    this.socket.onopen = (event) => {
+      console.log('Connected to server.');
+    };
+
+    // this.socket.onmessage = this.handleIncomingMessage;
+    this.socket.onmessage = (event) => {
+      console.log('Message', event.data);
+      // the socket event data is encoded as a JSON string
+      // the line turns it into an object
+      const data = JSON.parse(event.data);
+      console.log('Data', data);
+
+      switch(data.type) {
+        case 'incomingMessage':
+          // Handle incoming message
+          console.log('Incoming Message');
+          handleIncomingMessage(data);
+          break;
+        case 'incomingNotification':
+          // Handle incoming notification
+          console.log('Incoming Notification');
+          handleIncomingNotification(data);
+          break;
+        default:
+          // show an error in the console if the message is unknown
+          // throw new Error('Unknown event type ' + data.type);
+      }
+    };
   }
 
   addUser = (newUser, newChat) => {
@@ -33,7 +62,8 @@ class App extends Component {
     }
   };
 
-  handleServerMessage = (event) => {
+  handleIncomingMessage = (event) => {
+    console.log('Incoming Message', event);
     const message = JSON.parse(event.data);
     const newMessageList = this.state.messages;
     newMessageList.push({content: message.content, name: message.username});
@@ -42,6 +72,12 @@ class App extends Component {
       messages: newMessageList
     });
   };
+
+  handleIncomingNotification = (event) => {
+    console.log('Incoming Notification', event);
+    const notification = JSON.parse(event.data);
+
+  }
 
   render() {
     return (
