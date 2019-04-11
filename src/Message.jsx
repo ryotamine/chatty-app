@@ -5,9 +5,9 @@ class Message extends Component {
     let message = this.props.message;
     return (
       <div className='message'>
-          <span className='username'><strong>{message.name}</strong></span>
-          <span className='content'>{message.content}</span>
-        </div>
+        <span className='username'><strong>{message.name}</strong></span>
+        <span className='content'>{message.content}</span>
+      </div>
     );
   }
 }

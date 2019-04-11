@@ -8,17 +8,15 @@ class ChatBar extends Component {
       newUser: '',
       newChat: ''
     };
-    this.handleUser = this.handleUser.bind(this);
-    this.handleChat = this.handleChat.bind(this);
   }
 
-  handleUser(eventUser) {
+  handleUser = (eventUser) => {
     eventUser.preventDefault();
     let newUser = eventUser.target.value;
     this.setState({newUser});
   }
 
-  handleChat(eventChat) {
+  handleChat = (eventChat) => {
     eventChat.preventDefault();
     let newChat = eventChat.target.value;
     this.setState({newChat});
@@ -37,11 +35,6 @@ class ChatBar extends Component {
                value={this.state.newUser}
                onChange={this.handleUser}
                onBlur={this.nameChange}
-               /* onKeyPress={event1 => {
-                 if (event1.key === 'Enter') {
-                   this.props.addUser(this.state.newUser, this.state.newChat)
-                 }
-               }}*/
         />
         <input className='chatbar-message'
                placeholder='Type a message and hit ENTER'

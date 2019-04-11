@@ -10,15 +10,20 @@ class App extends Component {
     super(props);
 
     this.state = {
-      currentUser: { name: '' },
-      messages: []
+      currentUser: { name: 'Anonymous' },
+      messages: [],
+      activeUser: []
     };
-    this.handleServerMessage = this.handleServerMessage.bind(this);
   }
 
   componentDidMount() {
     this.socket = new WebSocket('ws://localhost:3001');
     this.socket.onopen = () => console.log('Connected to server.');
+    if (this) {
+
+    } else {
+
+    }
     this.socket.onmessage = this.handleServerMessage;
   }
 
@@ -26,15 +31,15 @@ class App extends Component {
     if (e === '') {
       const defaultName = 'Anonymous';
       console.log(defaultName);
-      const notify = {'type': 'postNotification', 'content': `${defaultName} has changed their name to ${e}.`};
-      //console.log(`${this.state.currentUser.name} has changed their name to ${e}.`);
+      const notify = {
+        'type': 'postNotification',
+        'content': `${defaultName} has changed their name to ${e}.`};
       this.socket.send(JSON.stringify(notify));
       this.setState({currentUser: {name: e }});
     } else if (e === this.state.currentUser.name) {
 
     } else if (e !== this.state.currentUser.name) {
       console.log('Event of name', e);
-      // console.log(this.state.currentUser);s
       const notify = {'type': 'postNotification',
        'content': `${this.state.currentUser.name} has changed their name to ${e}.`,
        id: uuid() };
@@ -55,6 +60,14 @@ class App extends Component {
     }));
   };
 
+  // trackUsers = (a) => {
+  //   console.log('Users', a);
+  //     this.setState({
+
+  //     });
+  //   }))
+  // }
+
   handleServerMessage = (event) => {
     console.log(event);
     const message = JSON.parse(event.data);
@@ -70,9 +83,10 @@ class App extends Component {
       <div>
         <nav className='navbar'>
           <a href='/' className='navbar-brand'>Chatty</a>
+          <a className='users-online'>{this.state.activeUser} users online</a>
         </nav>
         <MessageList messages={this.state.messages} />
-        <ChatBar sendMessage={this.sendMessage.bind(this)} changeName={this.changeName}/>
+        <ChatBar sendMessage={this.sendMessage} changeName={this.changeName}/>
       </div>
     );
   }

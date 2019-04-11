@@ -13,11 +13,19 @@ wss.broadcast = data => {
   wss.clients.forEach(ws => {
     if (ws.readyState === WebSocket.OPEN) {
       ws.send(JSON.stringify(data));
+      // console.log(data);
     }
   });
 };
 
 wss.on('connection', ws => {
+  console.log('Client connected');
+
+  //console.log(wss.clients.size);
+  const login = {login: wss.clients.size};
+  console.log(login.login);
+  wss.broadcast(login);
+
   ws.on('message', data => {
     console.log('received a message %s', data);
     const json = JSON.parse(data);
@@ -31,6 +39,16 @@ wss.on('connection', ws => {
         break;
     }
   });
+
+  ws.on('close', () => {
+    console.log('Client disconnected');
+
+    //console.log(wss.clients.size);
+    const logout = {logout: wss.clients.size};
+    console.log(logout.logout);
+    wss.broadcast(logout);
+  });
+
 });
 
 server.listen(PORT, () => {
