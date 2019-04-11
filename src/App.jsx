@@ -12,18 +12,18 @@ class App extends Component {
     this.state = {
       currentUser: { name: 'Anonymous' },
       messages: [],
-      activeUser: []
+      activeUser: 0
     };
   }
 
   componentDidMount() {
     this.socket = new WebSocket('ws://localhost:3001');
     this.socket.onopen = () => console.log('Connected to server.');
-    if (this) {
+    // if (this.socket.onmessage === /*?*/) {
 
-    } else {
+    // } else {
 
-    }
+    // }
     this.socket.onmessage = this.handleServerMessage;
   }
 
@@ -33,7 +33,8 @@ class App extends Component {
       console.log(defaultName);
       const notify = {
         'type': 'postNotification',
-        'content': `${defaultName} has changed their name to ${e}.`};
+        'content': `${defaultName} has changed their name to ${e}.`
+      };
       this.socket.send(JSON.stringify(notify));
       this.setState({currentUser: {name: e }});
     } else if (e === this.state.currentUser.name) {
@@ -69,13 +70,29 @@ class App extends Component {
   // }
 
   handleServerMessage = (event) => {
-    console.log(event);
+    console.log("event!!!!!", event.data);
     const message = JSON.parse(event.data);
-    const newMessageList = this.state.messages;
-    newMessageList.push(message);
-    this.setState({
-      messages: newMessageList
-    });
+    let newMessageList;
+    switch(message.type) {
+      case 'postNotification':
+        newMessageList = this.state.messages;
+        newMessageList.push(message);
+        this.setState({
+          messages: newMessageList
+        });
+        break;
+      case 'postMessage':
+        newMessageList = this.state.messages;
+        newMessageList.push(message);
+        this.setState({
+          messages: newMessageList
+        });
+        break;
+      case 'user':
+      console.log(event);
+        this.setState({activeUser: message.clients});
+        break;
+    }
   };
 
   render() {

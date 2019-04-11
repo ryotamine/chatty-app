@@ -22,8 +22,11 @@ wss.on('connection', ws => {
   console.log('Client connected');
 
   //console.log(wss.clients.size);
-  const login = {login: wss.clients.size};
-  console.log(login.login);
+  const login = {
+    clients: wss.clients.size,
+    type: 'user'
+  };
+  console.log(login.clients);
   wss.broadcast(login);
 
   ws.on('message', data => {
@@ -44,8 +47,11 @@ wss.on('connection', ws => {
     console.log('Client disconnected');
 
     //console.log(wss.clients.size);
-    const logout = {logout: wss.clients.size};
-    console.log(logout.logout);
+    const logout = {
+      clients: wss.clients.size,
+      type: 'user'
+    };
+    console.log(logout.clients);
     wss.broadcast(logout);
   });
 
