@@ -53,6 +53,7 @@ body {
 /* Message on browser */
 .message-content {
   flex: 8;
+  font-style: italic;
 }
 
 /* Username on browser */
@@ -84,6 +85,11 @@ body {
   line-height: 60px;
   padding: 0 10px;
   text-decoration: none;
+}
+
+/* Notification content */
+.notification-content {
+  color: red;
 }
 
 /* Users online */

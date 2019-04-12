@@ -31,6 +31,7 @@ wss.on('connection', ws => {
 
   // Transfer data to broadcast
   ws.on('message', data => {
+    console.log('received a message %s', data);
     const json = JSON.parse(data);
 
     switch(json.type) {
