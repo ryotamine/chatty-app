@@ -31,7 +31,7 @@ class App extends Component {
     return (
       <div>
         <nav className='navbar'>
-          <a href='/' className='navbar-brand'>Cloud Nine</a>
+          <a href='/' className='navbar-brand'>Chatty</a>
           <a className='users-online'>{this.state.activeUser} users online</a>
         </nav>
         <MessageList messages={this.state.messages} />
@@ -58,7 +58,6 @@ class App extends Component {
         content: `${this.state.currentUser.name} has changed their name to ${name}.`,
         id: uuid()
       };
-      console.log(`${this.state.currentUser.name} has changed their name to ${name}.`);
       this.socket.send(JSON.stringify(notify));
       this.setState({currentUser: {name}});
     }
