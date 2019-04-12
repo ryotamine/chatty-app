@@ -1,16 +1,18 @@
 import React, {Component} from 'react';
 import Message from './Message.jsx';
 
+// Message list class
 class MessageList extends Component {
+  // Message list constructor
   constructor(props) {
     super(props);
   }
 
+  // Render message list
   render() {
-    console.log(this.props.messages);
     const messageList = this.props.messages.map((message) => {
       return (
-        <Message key={message.id} message={message}/>
+        <Message message={message}/>
       );
     });
     return (

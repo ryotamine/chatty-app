@@ -3,56 +3,69 @@ import MessageList from './MessageList.jsx';
 import Message from './Message.jsx';
 import ChatBar from './ChatBar.jsx';
 
+// Acquire UUID
 const uuid = require('uuid/v4');
 
+// App class
 class App extends Component {
+  // App constructor
   constructor(props) {
     super(props);
 
     this.state = {
       currentUser: { name: 'Anonymous' },
       messages: [],
-      activeUser: 0
+      activeUser: 1
     };
   }
 
+  // Connect WebSocket
   componentDidMount() {
     this.socket = new WebSocket('ws://localhost:3001');
     this.socket.onopen = () => console.log('Connected to server.');
-    // if (this.socket.onmessage === /*?*/) {
-
-    // } else {
-
-    // }
-    this.socket.onmessage = this.handleServerMessage;
+    this.socket.onmessage = this._handleServerMessage;
   }
 
-  changeName = (e) => {
-    if (e === '') {
+  // Render app
+  render() {
+    return (
+      <div>
+        <nav className='navbar'>
+          <a href='/' className='navbar-brand'>Cloud Nine</a>
+          <a className='users-online'>{this.state.activeUser} users online</a>
+        </nav>
+        <MessageList messages={this.state.messages} />
+        <ChatBar sendMessage={this._sendMessage} changeName={this._changeName}/>
+      </div>
+    );
+  }
+
+  // Username change function
+  _changeName = (name) => {
+    if (name === '') {
       const defaultName = 'Anonymous';
-      console.log(defaultName);
       const notify = {
-        'type': 'postNotification',
-        'content': `${defaultName} has changed their name to ${e}.`
+        type: 'postNotification',
+        content: `${defaultName} has changed their name to ${name}.`
       };
       this.socket.send(JSON.stringify(notify));
-      this.setState({currentUser: {name: e }});
-    } else if (e === this.state.currentUser.name) {
+      this.setState({currentUser: {name}});
+    } else if (name === this.state.currentUser.name) {
 
-    } else if (e !== this.state.currentUser.name) {
-      console.log('Event of name', e);
-      const notify = {'type': 'postNotification',
-       'content': `${this.state.currentUser.name} has changed their name to ${e}.`,
-       id: uuid() };
-      console.log(`${this.state.currentUser.name} has changed their name to ${e}.`);
+    } else if (name !== this.state.currentUser.name) {
+      const notify = {
+        type: 'postNotification',
+        content: `${this.state.currentUser.name} has changed their name to ${name}.`,
+        id: uuid()
+      };
+      console.log(`${this.state.currentUser.name} has changed their name to ${name}.`);
       this.socket.send(JSON.stringify(notify));
-      this.setState({currentUser: {name: e }});
-
-      console.log(this.state.currentUser.name);
+      this.setState({currentUser: {name}});
     }
   };
 
-  sendMessage = (content) => {
+  // Send message function
+  _sendMessage = (content) => {
     this.socket.send(JSON.stringify({
       type: 'postMessage',
       content,
@@ -61,16 +74,8 @@ class App extends Component {
     }));
   };
 
-  // trackUsers = (a) => {
-  //   console.log('Users', a);
-  //     this.setState({
-
-  //     });
-  //   }))
-  // }
-
-  handleServerMessage = (event) => {
-    console.log("event!!!!!", event.data);
+  // Server message helper function
+  _handleServerMessage = (event) => {
     const message = JSON.parse(event.data);
     let newMessageList;
     switch(message.type) {
@@ -89,24 +94,12 @@ class App extends Component {
         });
         break;
       case 'user':
-      console.log(event);
         this.setState({activeUser: message.clients});
         break;
+      default:
+        throw new Error(`Unknown event type ${data.type}`);
     }
   };
-
-  render() {
-    return (
-      <div>
-        <nav className='navbar'>
-          <a href='/' className='navbar-brand'>Chatty</a>
-          <a className='users-online'>{this.state.activeUser} users online</a>
-        </nav>
-        <MessageList messages={this.state.messages} />
-        <ChatBar sendMessage={this.sendMessage} changeName={this.changeName}/>
-      </div>
-    );
-  }
 }
 
 export default App;

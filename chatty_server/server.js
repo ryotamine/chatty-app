@@ -9,28 +9,28 @@ const server = http.createServer(app);
 
 const wss = new WebSocket.Server({ server });
 
+// Broadcast data to client
 wss.broadcast = data => {
   wss.clients.forEach(ws => {
     if (ws.readyState === WebSocket.OPEN) {
       ws.send(JSON.stringify(data));
-      // console.log(data);
     }
   });
 };
 
+// Connect WebSocket
 wss.on('connection', ws => {
   console.log('Client connected');
 
-  //console.log(wss.clients.size);
+  // User login
   const login = {
     clients: wss.clients.size,
     type: 'user'
   };
-  console.log(login.clients);
   wss.broadcast(login);
 
+  // Transfer data to broadcast
   ws.on('message', data => {
-    console.log('received a message %s', data);
     const json = JSON.parse(data);
 
     switch(json.type) {
@@ -40,23 +40,25 @@ wss.on('connection', ws => {
       case 'postMessage':
         wss.broadcast(json);
         break;
+      default:
+        throw new Error(`Unknown event type ${data.type}`);
     }
   });
 
+  // Close WebSocket
   ws.on('close', () => {
     console.log('Client disconnected');
 
-    //console.log(wss.clients.size);
+    // User logout
     const logout = {
       clients: wss.clients.size,
       type: 'user'
     };
-    console.log(logout.clients);
     wss.broadcast(logout);
   });
-
 });
 
+// Boot server
 server.listen(PORT, () => {
-  console.log(`Listening on ${ PORT }.\nClient connected`);
+  console.log(`Listening on ${ PORT }.`);
 });

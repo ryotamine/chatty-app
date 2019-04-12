@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 
+// Chat bar class
 class ChatBar extends Component {
+  // Chat bar constructor
   constructor(props) {
     super(props);
 
@@ -10,22 +12,7 @@ class ChatBar extends Component {
     };
   }
 
-  handleUser = (eventUser) => {
-    eventUser.preventDefault();
-    let newUser = eventUser.target.value;
-    this.setState({newUser});
-  }
-
-  handleChat = (eventChat) => {
-    eventChat.preventDefault();
-    let newChat = eventChat.target.value;
-    this.setState({newChat});
-  }
-
-  nameChange = (eventName) => {
-    this.props.changeName(eventName.target.value);
-  }
-
+  // Render chat bar
   render() {
     return (
       <footer className='chatbar'>
@@ -33,14 +20,14 @@ class ChatBar extends Component {
                placeholder='Your Name (Optional)'
                type='text'
                value={this.state.newUser}
-               onChange={this.handleUser}
-               onBlur={this.nameChange}
+               onChange={this._handleUser}
+               onBlur={this._handleNameChange}
         />
         <input className='chatbar-message'
                placeholder='Type a message and hit ENTER'
                type='text'
                value={this.state.newChat}
-               onChange={this.handleChat}
+               onChange={this._handleChat}
                onKeyPress={event => {
                  if (event.key === 'Enter') {
                    this.props.sendMessage(this.state.newChat);
@@ -50,6 +37,25 @@ class ChatBar extends Component {
         />
       </footer>
     );
+  }
+
+  // Username helper function
+  _handleUser = (eventUser) => {
+    eventUser.preventDefault();
+    let newUser = eventUser.target.value;
+    this.setState({newUser});
+  }
+
+  // Chat helper function
+  _handleChat = (eventChat) => {
+    eventChat.preventDefault();
+    let newChat = eventChat.target.value;
+    this.setState({newChat});
+  }
+
+  // Username change helper function
+  _handleNameChange = (eventName) => {
+    this.props.changeName(eventName.target.value);
   }
 }
 

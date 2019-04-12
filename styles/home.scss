@@ -1,3 +1,4 @@
+/* Body */
 body {
   background: white;
   color: black;
@@ -6,6 +7,7 @@ body {
   margin: 70px 0;
 }
 
+/* Chat bar */
 .chatbar {
   background: tomato;
   border-top: 1px solid black;
@@ -17,6 +19,7 @@ body {
   right: 0;
 }
 
+/* Chat bar message and username box */
 .chatbar-message, .chatbar-username {
   border: 1px solid black;
   display: block;
@@ -26,43 +29,39 @@ body {
   padding: 0 9px;
 }
 
+/* Chat bar message box */
 .chatbar-message {
   flex: 8;
 }
 
+/* Chat bar username box */
 .chatbar-username {
   flex: 2;
 }
 
+ /* Message */
 .message {
   display: flex;
   padding: 5px;
 }
 
+/* Message list */
 .message-list {
   padding: 10px;
 }
 
-.message.system {
-  font-style: italic;
-  padding: 5px 20px;
-}
-
-.message-content, .message-username {
-  overflow: hidden;
-  margin: 5px;
-  padding: 0 10px;
-}
-
+/* Message on browser */
 .message-content {
   flex: 8;
 }
 
+/* Username on browser */
 .message-username {
   flex: 2;
   font-weight: 700;
 }
 
+/* Navigator bar */
 .navbar {
   background: tomato;
   border-bottom: 1px solid black;
@@ -74,6 +73,7 @@ body {
   top: 0;
 }
 
+/* Navigator brand */
 .navbar-brand {
   color: inherit;
   display: block;
@@ -86,14 +86,7 @@ body {
   text-decoration: none;
 }
 
-.username {
-  flex: 2;
-}
-
-.content {
-  flex: 8;
-}
-
+/* Users online */
 .users-online {
   float: right;
   font-size: 18px;
