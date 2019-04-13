@@ -4,7 +4,7 @@ Chatty App is a full-stack web application built with React that allows users to
 
 ## Final Product
 
-!["Screenshot of chatty messages"](https://github.com/ryotamine/chatty-app/blob/master/build/chatty-messages.png)
+!["Screenshot of chatty messages"](https://github.com/ryotamine/chatty-app/blob/master/docs/chatty-messages.png)
 
 ### Dependencies
 
