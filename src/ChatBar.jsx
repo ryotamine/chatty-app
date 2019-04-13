@@ -31,7 +31,7 @@ class ChatBar extends Component {
                onKeyPress={event => {
                  if (event.key === 'Enter') {
                    this.props.sendMessage(this.state.newChat);
-                   this.setState({newChat: ''});
+                   this.setState({ newChat: '' });
                  }
                }}
         />
@@ -43,14 +43,14 @@ class ChatBar extends Component {
   _handleUser = (eventUser) => {
     eventUser.preventDefault();
     let newUser = eventUser.target.value;
-    this.setState({newUser});
+    this.setState({ newUser });
   }
 
   // Chat helper function
   _handleChat = (eventChat) => {
     eventChat.preventDefault();
     let newChat = eventChat.target.value;
-    this.setState({newChat});
+    this.setState({ newChat });
   }
 
   // Username change helper function

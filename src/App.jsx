@@ -3,9 +3,6 @@ import MessageList from './MessageList.jsx';
 import Message from './Message.jsx';
 import ChatBar from './ChatBar.jsx';
 
-// Acquire UUID
-const uuid = require('uuid/v4');
-
 // App class
 class App extends Component {
   // App constructor
@@ -49,17 +46,16 @@ class App extends Component {
         content: `${defaultName} has changed their name to ${name}.`
       };
       this.socket.send(JSON.stringify(notify));
-      this.setState({currentUser: {name}});
+      this.setState({ currentUser: {name} });
     } else if (name === this.state.currentUser.name) {
 
     } else if (name !== this.state.currentUser.name) {
       const notify = {
         type: 'postNotification',
-        content: `${this.state.currentUser.name} has changed their name to ${name}.`,
-        id: uuid()
+        content: `${this.state.currentUser.name} has changed their name to ${name}.`
       };
       this.socket.send(JSON.stringify(notify));
-      this.setState({currentUser: {name}});
+      this.setState({ currentUser: {name} });
     }
   };
 
@@ -68,7 +64,6 @@ class App extends Component {
     this.socket.send(JSON.stringify({
       type: 'postMessage',
       content,
-      id: uuid(),
       name: this.state.currentUser.name
     }));
   };
@@ -81,19 +76,15 @@ class App extends Component {
       case 'postNotification':
         newMessageList = this.state.messages;
         newMessageList.push(message);
-        this.setState({
-          messages: newMessageList
-        });
+        this.setState({ messages: newMessageList });
         break;
       case 'postMessage':
         newMessageList = this.state.messages;
         newMessageList.push(message);
-        this.setState({
-          messages: newMessageList
-        });
+        this.setState({ messages: newMessageList });
         break;
       case 'user':
-        this.setState({activeUser: message.clients});
+        this.setState({ activeUser: message.clients });
         break;
       default:
         throw new Error(`Unknown event type ${data.type}`);

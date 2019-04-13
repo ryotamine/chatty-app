@@ -9,6 +9,15 @@ const server = http.createServer(app);
 
 const wss = new WebSocket.Server({ server });
 
+// Acquire UUID
+const uuid = require('uuid/v4');
+
+// Unique ID helper function
+addUniqueID = json => {
+  json.id = uuid();
+  return json;
+};
+
 // Broadcast data to client
 wss.broadcast = data => {
   wss.clients.forEach(ws => {
@@ -33,6 +42,7 @@ wss.on('connection', ws => {
   ws.on('message', data => {
     console.log('received a message %s', data);
     const json = JSON.parse(data);
+    console.log(addUniqueID(json));
 
     switch(json.type) {
       case 'postNotification':
