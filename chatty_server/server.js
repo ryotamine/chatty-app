@@ -71,5 +71,5 @@ wss.on('connection', ws => {
 
 // Boot server
 server.listen(PORT, () => {
-  console.log(`Listening on ${ PORT }.`);
+  console.log(`Listening on ${PORT}.`);
 });

@@ -16,27 +16,6 @@ class App extends Component {
     };
   }
 
-  // Connect WebSocket
-  componentDidMount() {
-    this.socket = new WebSocket('ws://localhost:3001');
-    this.socket.onopen = () => console.log('Connected to server.');
-    this.socket.onmessage = this._handleServerMessage;
-  }
-
-  // Render app
-  render() {
-    return (
-      <div>
-        <nav className='navbar'>
-          <a href='/' className='navbar-brand'>Chatty</a>
-          <a className='users-online'>{this.state.activeUser} users online</a>
-        </nav>
-        <MessageList messages={this.state.messages} />
-        <ChatBar sendMessage={this._sendMessage} changeName={this._changeName}/>
-      </div>
-    );
-  }
-
   // Username change function
   _changeName = (name) => {
     if (name === '') {
@@ -90,6 +69,27 @@ class App extends Component {
         throw new Error(`Unknown event type ${data.type}`);
     }
   };
+
+  // Connect WebSocket
+  componentDidMount() {
+    this.socket = new WebSocket('ws://localhost:3001');
+    this.socket.onopen = () => console.log('Connected to server.');
+    this.socket.onmessage = this._handleServerMessage;
+  }
+
+  // Render app
+  render() {
+    return (
+      <div>
+        <nav className='navbar'>
+          <a href='/' className='navbar-brand'>Chatty</a>
+          <a className='users-online'>{this.state.activeUser} users online</a>
+        </nav>
+        <MessageList messages={this.state.messages} />
+        <ChatBar sendMessage={this._sendMessage} changeName={this._changeName}/>
+      </div>
+    );
+  }
 }
 
 export default App;

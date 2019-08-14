@@ -53,7 +53,6 @@ body {
 /* Message on browser */
 .message-content {
   flex: 8;
-  font-style: italic;
 }
 
 /* Username on browser */
@@ -90,6 +89,7 @@ body {
 /* Notification content */
 .notification-content {
   color: black;
+  font-style: italic;
 }
 
 /* Users online */

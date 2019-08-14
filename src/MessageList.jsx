@@ -17,8 +17,8 @@ class MessageList extends Component {
         );
       } else {
         return (
-          <div className="notification" key={message.id}>
-            <span className="notification-content">{message.content}</span>
+          <div className='notification' key={message.id}>
+            <span className='notification-content'>{message.content}</span>
           </div>
         );
       }
